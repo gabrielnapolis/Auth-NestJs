@@ -10,7 +10,7 @@ import {
   // Decorators
   import { IS_PUBLIC_KEY } from '../decorators/is-public.decorator';
   // Error Handling
-  //import { UnauthorizedError } from '../errors/unauthorized.error';
+  import { UnauthorizedError } from '../errors/unauthorized.error';
   
   @Injectable()
   export class JwtAuthGuard extends AuthGuard('jwt') {
@@ -36,12 +36,12 @@ import {
   
       const canActivatePromise = canActivate as Promise<boolean>;
   
-      // return canActivatePromise.catch((error) => {
-      //   if (error instanceof UnauthorizedError) {
-      //     throw new UnauthorizedException(error.message);
-      //   }
+      return canActivatePromise.catch((error) => {
+        if (error instanceof UnauthorizedError) {
+          throw new UnauthorizedException(error.message);
+        }
   
-      //   throw new UnauthorizedException();
-      // });
+        throw new UnauthorizedException();
+      });
     }
   }
